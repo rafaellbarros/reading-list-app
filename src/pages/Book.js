@@ -35,6 +35,7 @@ const Book = ({navigation}) => {
             };
             console.log(JSON.stringify(data));
             await AsyncStorage.setItem("books", JSON.stringify(data));
+            navigation.goBack();
         } else {
             console.log('Inválido')
         }
