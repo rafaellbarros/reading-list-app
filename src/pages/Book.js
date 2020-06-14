@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { AsyncStorage, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Book = ({navigation}) => {
@@ -9,8 +9,8 @@ const Book = ({navigation}) => {
     const [photo, setPhoto ] = useState();
 
     // 1. capturar os dados [OK]
-    // 2. validar
-    // 3. salvar no bd
+    // 2. validar [OK]
+    // 3. salvar no bd (AsyncStore) [OK]
 
     const isValid = () => {
         if (title !== undefined && title !== '') {
@@ -20,18 +20,26 @@ const Book = ({navigation}) => {
     }
 
 
-    const onSave = () => {
+    const onSave = async () => {
         console.log(`Title ${title}`)
         console.log(`Description ${description}`)
 
         if (isValid()) {
             console.log('Válido')
+            const id = 1;
+            const data = {
+                id,
+                title,
+                description,
+                photo,
+            };
+            console.log(JSON.stringify(data));
+            await AsyncStorage.setItem("books", JSON.stringify(data));
         } else {
             console.log('Inválido')
         }
 
     }
-
 
     return (
         <View style={styles.container}>
