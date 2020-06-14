@@ -1,0 +1,17 @@
+{
+  "name": "reading-list-app",
+  "displayName": "reading-list-app",
+  "expo": {
+    "name": "reading-list-app",
+    "slug": "expo-template-bare",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
