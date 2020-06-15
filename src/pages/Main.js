@@ -13,15 +13,23 @@ const Main = ({navigation}) => {
         })
     }, [])
 
+
+    const onNewEbook = () => {
+        navigation.navigate('Book');
+    }
+
+    const onBookEdit = (bookId) => {
+        const book = books.find(item => item.id === bookId);
+        navigation.navigate('Book',  { book: book, isEdit: true})
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.toolbox}>
                 <Text style={styles.title}>Lista de Leitura</Text>
                 <TouchableOpacity 
                     style={styles.toolboxButton}
-                    onPress={() => {
-                        navigation.navigate('Book');
-                    }}
+                    onPress={onNewEbook}
                     >
                     <Icon name="add" size={14} color="#fff" />
                 </TouchableOpacity>
@@ -30,9 +38,18 @@ const Main = ({navigation}) => {
                 data={books}
                 keyExtractor={item => item.id} 
                 renderItem={({item}) => (
-                    <TouchableOpacity style={styles.itemButton}>
-                        <Text style={styles.itemText}>{item.title}</Text>
-                    </TouchableOpacity>
+                    <View style={styles.itensContainer}>
+                        <TouchableOpacity style={styles.itemButton}>
+                            <Text style={styles.itemText}>{item.title}</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity 
+                            style={styles.editButton}
+                            onPress={() => onBookEdit(item.id)}
+                            >
+                            <Icon name="create" size={14} color="#2ecc71" />
+                        </TouchableOpacity>
+                    </View>
                 )}
             />
         </View>
@@ -61,12 +78,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    itensContainer: {
+        flexDirection: 'row',
+    },
     itemButton: {
-
+        flex: 1
     },
     itemText: {
         fontSize: 16
-    }
+    },
+    editButton: { }
 })
 
 export default Main;
