@@ -5,14 +5,13 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Main = ({navigation}) => {
     const [ books, setBooks ] = useState([]);
-    useEffect(() => {
-        const books = AsyncStorage.getItem('books');
-        books.then(data => {
-            const book = JSON.parse(data);
-            setBooks(book);
-        })
-    }, [])
 
+    useEffect(() => {
+        AsyncStorage.getItem("books").then(data => {
+          const book = JSON.parse(data);
+          setBooks(book);
+        })
+      }, []);
 
     const onNewEbook = () => {
         navigation.navigate('Book');
@@ -21,6 +20,12 @@ const Main = ({navigation}) => {
     const onBookEdit = (bookId) => {
         const book = books.find(item => item.id === bookId);
         navigation.navigate('Book',  { book: book, isEdit: true})
+    }
+
+    const onBookDelete = async (bookId) => {
+        const newBooks = books.filter(item => item.id !== bookId);
+        await AsyncStorage.setItem('books', newBooks);
+        setBooks(newBooks);
     }
 
     return (
@@ -48,6 +53,13 @@ const Main = ({navigation}) => {
                             onPress={() => onBookEdit(item.id)}
                             >
                             <Icon name="create" size={14} color="#2ecc71" />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity 
+                            style={styles.deleteButton}
+                            onPress={() => onBookDelete(item.id)}
+                            >
+                            <Icon name="delete" size={14} color="#e74c3c" />
                         </TouchableOpacity>
                     </View>
                 )}
@@ -87,7 +99,8 @@ const styles = StyleSheet.create({
     itemText: {
         fontSize: 16
     },
-    editButton: { }
+    editButton: {},
+    deleteButton: {}
 })
 
 export default Main;

@@ -15,19 +15,20 @@ const Book = ({navigation}) => {
 
     const isEdit = navigation.getParam('isEdit', false);
 
-    const [books, setBooks] = useState();
+    const [books, setBooks] = useState([]);
     const [title, setTitle] = useState(book.title);
     const [description, setDescription] = useState(book.description);
     const [read, setRead] = useState(book.read);
     const [photo, setPhoto] = useState(book.photo);
 
     useEffect(() => {
-        const books = AsyncStorage.getItem('books');
-        books.then(data => {
+        AsyncStorage.getItem("books").then(data => {
+          if(data) {
             const book = JSON.parse(data);
             setBooks(book);
+          }
         })
-    }, [])
+      }, []);
 
 
     // 1. capturar os dados [OK]
@@ -63,7 +64,7 @@ const Book = ({navigation}) => {
 
                 await AsyncStorage.setItem("books", JSON.stringify(newBooks));
             } else {
-                const id = Math.random(5000);
+                const id = Math.random(5000).toString();
                 const data = {
                     id,
                     title,
