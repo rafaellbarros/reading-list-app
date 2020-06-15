@@ -24,9 +24,20 @@ const Main = ({navigation}) => {
 
     const onBookDelete = async (bookId) => {
         const newBooks = books.filter(item => item.id !== bookId);
-        await AsyncStorage.setItem('books', newBooks);
+        await AsyncStorage.setItem('books', JSON.stringify(newBooks));
         setBooks(newBooks);
     }
+
+    const onBookRead = async (bookId) => {
+        const newBooks = books.map(item => {
+            if (item.id === bookId) {
+                item.read = !item.read;
+            }
+            return item;
+        });
+        await AsyncStorage.setItem('books', JSON.stringify(newBooks));
+        setBooks(newBooks);
+    } 
 
     return (
         <View style={styles.container}>
@@ -44,8 +55,11 @@ const Main = ({navigation}) => {
                 keyExtractor={item => item.id} 
                 renderItem={({item}) => (
                     <View style={styles.itensContainer}>
-                        <TouchableOpacity style={styles.itemButton}>
-                            <Text style={styles.itemText}>{item.title}</Text>
+                        <TouchableOpacity 
+                            style={styles.itemButton}
+                            onPress={() => onBookRead(item.id)}
+                            >
+                            <Text style={[styles.itemText, item.read ? styles.itemRead : '' ]}>{item.title}</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity 
@@ -98,6 +112,10 @@ const styles = StyleSheet.create({
     },
     itemText: {
         fontSize: 16
+    },
+    itemRead: {
+        textDecorationLine: 'line-through',
+        color: '#95a5a6'
     },
     editButton: {},
     deleteButton: {}

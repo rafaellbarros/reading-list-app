@@ -10,9 +10,7 @@ const Book = ({navigation}) => {
         read: false,
         photo: ''
     });
-
-    console.warn('book', book);
-
+    
     const isEdit = navigation.getParam('isEdit', false);
 
     const [books, setBooks] = useState([]);
@@ -29,11 +27,6 @@ const Book = ({navigation}) => {
           }
         })
       }, []);
-
-
-    // 1. capturar os dados [OK]
-    // 2. validar [OK]
-    // 3. salvar no bd (AsyncStore) [OK]
 
     const isValid = () => {
         if (title !== undefined && title !== '') {
@@ -72,8 +65,6 @@ const Book = ({navigation}) => {
                     photo,
                 };
 
-                console.log('data -> ', data);
-    
                 books.push(data); 
                 await AsyncStorage.setItem("books", JSON.stringify(books));
             }
