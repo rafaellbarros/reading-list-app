@@ -1,12 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AsyncStorage, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Book = ({navigation}) => {
+    const [books, setBooks] = useState();
+    const [title, setTitle] = useState();
+    const [description, setDescription] = useState();
+    const [photo, setPhoto] = useState();
 
-    const [title, setTitle ] = useState();
-    const [description, setDescription ] = useState();
-    const [photo, setPhoto ] = useState();
+    useEffect(() => {
+        const books = AsyncStorage.getItem('books');
+        books.then(data => {
+            const book = JSON.parse(data);
+            setBooks(book);
+        })
+    }, [])
+
 
     // 1. capturar os dados [OK]
     // 2. validar [OK]
@@ -26,15 +35,18 @@ const Book = ({navigation}) => {
 
         if (isValid()) {
             console.log('Válido')
-            const id = 1;
+            const id = Math.random(5000);
             const data = {
                 id,
                 title,
                 description,
                 photo,
             };
+
+            books.push(data); 
+
             console.log(JSON.stringify(data));
-            await AsyncStorage.setItem("books", JSON.stringify(data));
+            await AsyncStorage.setItem("books", JSON.stringify(books));
             navigation.goBack();
         } else {
             console.log('Inválido')

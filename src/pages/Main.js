@@ -4,48 +4,14 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 
 const Main = ({navigation}) => {
-
     const [ books, setBooks ] = useState([]);
-    // 1. Recuperar dados
-    // 2. Listar estes dados
-
     useEffect(() => {
-        // codigo de execução
-        // recuperar os dados do AsyncStorage
         const books = AsyncStorage.getItem('books');
-
         books.then(data => {
             const book = JSON.parse(data);
-            console.log('book => ', book);
-            setBooks([book]);
+            setBooks(book);
         })
-
-        console.log('userEfect')
     }, [])
-
-    const data = [
-        {
-            id: "1",
-            title: "Código Limpo",
-            anotations: "Libro muito bom!",
-            read: false,
-            photo: null,
-        },
-        {
-            id: "2",
-            title: "C Completo total",
-            anotations: "Libro muito bom!",
-            read: false,
-            photo: null,
-        },
-        {
-            id: "3",
-            title: "A bíblia do PHP",
-            anotations: "Libro muito bom!",
-            read: false,
-            photo: null,
-        },
-    ]
 
     return (
         <View style={styles.container}>
